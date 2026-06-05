@@ -264,7 +264,14 @@ if st.session_state.page == "accueil":
     <div class="overlay"></div>
     <div class="title">MOVIE MIND</div>
     """, unsafe_allow_html=True)
-
+    
+    if "audio_played" not in st.session_state:
+        st.session_state["audio_played"] = True
+        audio_path = os.path.join(BASE_DIR, "movie_intro.mp3")
+        with open(audio_path, "rb") as f:
+            audio_bytes = f.read()
+        audio_b64 = __import__("base64").b64encode(audio_bytes).decode()
+        st.markdown(f"<audio autoplay><source src='data:audio/mp3;base64,{audio_b64}' type='audio/mpeg'></audio>", unsafe_allow_html=True)
     if st.button(t["commencer"]):
         st.session_state.page = "login"
         st.rerun()
